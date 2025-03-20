@@ -11,15 +11,21 @@ abstract class _FormStoreBase with Store{
    ObservableMap<String, String> formValues = ObservableMap.of({});
 
    @observable
-   ObservableMap<String, String?> formErrors = ObservableMap.of({});
+   ObservableMap<String, String?> formErrors = ObservableMap.of({
+   });
 
    @computed
    bool get isFormValid => formErrors.values.every((error) => error == null);
 
    @action
    void setField(String chave, String value){
+
+
       formValues[chave]=value;
       validateField(chave, value);
+
+      formValues = ObservableMap.of(formValues);
+      formErrors = ObservableMap.of(formErrors);
 
    }
 
@@ -28,7 +34,7 @@ abstract class _FormStoreBase with Store{
 
       if (!formValues.containsKey(chave)) {
       formValues[chave] = '';
-      formErrors[chave] = '';
+      formErrors[chave] = 'erro';
 
       
     }
@@ -58,6 +64,21 @@ abstract class _FormStoreBase with Store{
       if (!cpfRegex.hasMatch(cpf)) return 'CPF inválido';  
       return null;
    }   
+
+   @action
+  void validateAllFields() {
+    
+      formErrors = ObservableMap.of({
+        'nome': formValues['nome']?.isEmpty ?? true ? 'Campo obrigatório' : null,
+        'cpf': formValues['cpf']?.isEmpty ?? true ? 'Campo obrigatório' : null,
+        'email': formValues['email']?.isEmpty ?? true ? 'Campo obrigatório' : null,
+        'endereco': formValues['endereco']?.isEmpty ?? true ? 'Campo obrigatório' : null,
+        'bairro': formValues['bairro']?.isEmpty ?? true ? 'Campo obrigatório' : null,
+        'cep': formValues['cep']?.isEmpty ?? true ? 'Campo obrigatório' : null,
+        'n': formValues['n']?.isEmpty ?? true ? 'Campo obrigatório' : null,
+      });
+    
+  }
 
 
 }

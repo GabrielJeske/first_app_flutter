@@ -20,12 +20,8 @@ class Clientes extends StatelessWidget {
       body: Container(
         padding: EdgeInsets.all(10),
         child: SingleChildScrollView(
-          child: Column(
-
-            
-            children: [
-              
-            
+          child: Column(            
+            children: [           
               SizedBox(height: 20),
               Row(
                 children: [
@@ -33,30 +29,31 @@ class Clientes extends StatelessWidget {
                     width: 80,
                     child: Observer(
                       builder: (_) => TextFormField(
-                      keyboardType: TextInputType.numberWithOptions(),
-                      decoration: InputDecoration(
+                        keyboardType: TextInputType.numberWithOptions(),
+                        decoration: InputDecoration(
                           border: OutlineInputBorder(), 
                           labelText: 'Cod.',
                           errorText: formStore.formErrors['Cod.']
+                        ),
+                      onChanged: (value) => formStore.setField('cod', value),
                       ),
-                      onChanged: (value) => formStore.setField('Cod.', value),
-                    ),)
-                   
+                    )                   
                   ),
                   SizedBox(
                     width: 10,
                   ),
                   Flexible(
-                      child: Observer(builder: (_) =>
-                       TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(), 
-                      errorText: formStore.formErrors['nome'],
-                      labelText: 'Nome'
-                    ),
-                    onChanged: (value) => formStore.setField('nome', value),
-                  ) )
-                     )
+                    child: Observer(builder: (_) =>
+                      TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(), 
+                          errorText: formStore.formErrors['nome'],
+                          labelText: 'Nome'
+                        ),
+                        onChanged: (value) => formStore.setField('nome', value),
+                      ) 
+                    )
+                  )
                 ],
               ),
               SizedBox(height: 10),
@@ -64,63 +61,72 @@ class Clientes extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: 150,
-                    child: Observer(builder: (_) => TextFormField(
-                      keyboardType: TextInputType.numberWithOptions(),
-                      inputFormatters: [
-                        MaskTextInputFormatter(
-                           mask: '###.###.###-##',
-                          filter: {"#": RegExp(r'[0-9]')})
-                      ],
-                      decoration: InputDecoration(
-                       errorText: formStore.formErrors['cpf'],
-                        border: OutlineInputBorder(), 
-                        labelText: 'CPF'
+                    child: Observer(builder: (_) => 
+                      TextFormField(
+                        keyboardType: TextInputType.numberWithOptions(),                      
+                        decoration: InputDecoration(
+                          errorText: formStore.formErrors['cpf'],
+                          border: OutlineInputBorder(), 
+                          labelText: 'CPF'
+                          
+                        ),
+                        onChanged: (value) => formStore.setField('cpf', value)
                       ),
-                      onChanged: (value) => formStore.setField('cpf', value),
-                      //onChanged: formStore.setCpf,
-                    ),)
+                    )
                   ),
                   SizedBox(
                     width: 10,
                   ),
                   Flexible(
-                      child: DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                        labelText: 'Logadouro', border: OutlineInputBorder()),
-                    value: null,
-                    items: ['Rua', 'Avenida'].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      print("Selecionado: $newValue");
-                    },
-                  ))
+                    child: DropdownButtonFormField<String>(
+                      decoration: InputDecoration(
+                        labelText: 'Logadouro', border: OutlineInputBorder()
+                      ),
+                      value: null,
+                      items: ['Rua', 'Avenida'].map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        if (newValue != null){
+                          formStore.setField('logadouro', newValue);
+                        }                   
+                      },
+                    )
+                  )
                 ],
               ),
               SizedBox(height: 10),
               Row(
                 children: [
                   Flexible(
-                      child: TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(), 
-                      labelText: 'Endereco',
-                      errorText: formStore.formErrors['endereco']
-                    ),
-                    onChanged: (value) => formStore.setField('endereco', value),
-                  )),
+                    child: Observer(builder: (_) => 
+                      TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(), 
+                          labelText: 'Endereco',
+                          errorText: formStore.formErrors['endereco']
+                        ),
+                        onChanged: (value) => formStore.setField('endereco', value),
+                      )
+                    ) 
+                  ),
                   SizedBox(width: 10),
                   SizedBox(
                     width: 80,
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Nº', errorText: formStore.formErrors['n']),
-                      onChanged: (value) => formStore.setField('n', value),
-                    ),
+                    child: Observer(builder: (_) =>
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(), 
+                            labelText: 'Nº', 
+                            errorText: formStore.formErrors['n']
+                        ),
+                        onChanged: (value) => formStore.setField('n', value),
+                      ),
+                    )
                   )
                 ],
               ),
@@ -128,24 +134,31 @@ class Clientes extends StatelessWidget {
               Row(
                 children: [
                   Flexible(
-                      child: TextFormField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'Bairro', errorText: formStore.formErrors['bairro']),
-                        onChanged: (value) => formStore.setField('bairro', value),
-                  )),
+                    child: Observer(builder: (_) =>
+                      TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(), 
+                          labelText: 'Bairro', 
+                          errorText: formStore.formErrors['bairro']
+                        ),
+                          onChanged: (value) => formStore.setField('bairro', value),
+                      )
+                    )  
+                  ),
                   SizedBox(width: 10),
                   SizedBox(
                     width: 120,
-                    child: TextFormField(
-                      keyboardType: TextInputType.numberWithOptions(),
-                      inputFormatters: [
-                        MaskTextInputFormatter(
-                            mask: '#####-###', filter: {"#": RegExp(r'[0-9]')})
-                      ],
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Cep', errorText: formStore.formErrors['cep']),
-                          onChanged: (value) => formStore.setField('cep', value),
-                    ),
+                    child: Observer(builder: (_) =>
+                      TextFormField(
+                        keyboardType: TextInputType.numberWithOptions(),
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(), 
+                            labelText: 'Cep', 
+                            errorText: formStore.formErrors['cep']
+                            ),
+                            onChanged: (value) => formStore.setField('cep', value),
+                      ),
+                    )  
                   )
                 ],
               ),
@@ -153,11 +166,17 @@ class Clientes extends StatelessWidget {
               Row(
                 children: [
                   Flexible(
-                      child: TextFormField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(), labelText: 'E-mail', errorText: formStore.formErrors['email']),
+                    child: Observer(builder: (_) =>
+                      TextFormField(
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(), 
+                            labelText: 'E-mail', 
+                            errorText: formStore.formErrors['email']
+                        ),
                         onChanged: (value) => formStore.setField('email', value),
-                  ))
+                      )
+                    )  
+                  )
                 ],
               ),
               SizedBox(
@@ -166,25 +185,36 @@ class Clientes extends StatelessWidget {
               Row(
                 children: [
                   SizedBox(
-                    width: 50,
-                    child: TextFormField(
-                      keyboardType: TextInputType.numberWithOptions(),
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'DD'),
-                    ),
+                    width: 200,
+                    child: Observer(builder: (_) =>
+                      TextFormField(                  
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(), 
+                          labelText: 'contato',
+                          errorText: formStore.formErrors['contato']
+                        ),
+                        onChanged: (value) => formStore.setField('contato', value),  
+                      ),
+                    )  
                   ),
                   SizedBox(width: 10),
                   SizedBox(
-                    width: 200,
-                    child: TextFormField(
-                      keyboardType: TextInputType.numberWithOptions(),
-                      inputFormatters: [
-                        MaskTextInputFormatter(
-                            mask: '#####-####', filter: {"#": RegExp(r'[0-9]')})
-                      ],
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), labelText: 'Contato'),
-                    ),
+                    width: 100,
+                    child: Observer(builder: (_) =>
+                      TextFormField(
+                        keyboardType: TextInputType.numberWithOptions(),
+                        //inputFormatters: [
+                          //MaskTextInputFormatter(
+                            //mask: '## #####-####',)
+                        //],
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(), 
+                          labelText: 'Numero',
+                          errorText: formStore.formErrors['numero']
+                        ),
+                        onChanged: (value) => formStore.setField('numero', value),
+                      ),
+                    )  
                   )
                 ],
               ),
@@ -205,15 +235,25 @@ class Clientes extends StatelessWidget {
                         )),
                   ),
                   SizedBox(width: 10),
-                  ElevatedButton(
-                      onPressed: () {},
+                  Observer(builder: (_) =>
+                    ElevatedButton(
+                      onPressed: () {
+                        formStore.validateAllFields();
+                        if (formStore.isFormValid) {
+                          print("salvou");
+                        }
+                      },
                       child: Text('SALVAR'),
                       style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          padding: EdgeInsets.all(15),
-                          foregroundColor: Colors.black,
-                          textStyle: TextStyle(fontSize: 20)))
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
+                        ),
+                        padding: EdgeInsets.all(15),
+                        foregroundColor: Colors.black,
+                        textStyle: TextStyle(fontSize: 20)
+                      )
+                    )
+                  )  
                 ],
               ),
             ],
