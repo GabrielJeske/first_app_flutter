@@ -30,6 +30,16 @@ abstract class _FormStoreBase with Store{
    }
 
    @action
+   void resetForm() {
+      formValues.clear(); 
+      formErrors.clear(); 
+
+   
+      formValues = ObservableMap.of({});
+      formErrors = ObservableMap.of({});
+   }
+   
+   @action
    void validateField(String chave, String value) {
 
       if (!formValues.containsKey(chave)) {
@@ -37,7 +47,7 @@ abstract class _FormStoreBase with Store{
       formErrors[chave] = 'erro';
 
       
-    }
+      }
 
       formValues[chave] = value;
 
@@ -68,15 +78,19 @@ abstract class _FormStoreBase with Store{
    @action
   void validateAllFields() {
     
-      formErrors = ObservableMap.of({
-        'nome': formValues['nome']?.isEmpty ?? true ? 'Campo obrigatório' : null,
-        'cpf': formValues['cpf']?.isEmpty ?? true ? 'Campo obrigatório' : null,
-        'email': formValues['email']?.isEmpty ?? true ? 'Campo obrigatório' : null,
-        'endereco': formValues['endereco']?.isEmpty ?? true ? 'Campo obrigatório' : null,
-        'bairro': formValues['bairro']?.isEmpty ?? true ? 'Campo obrigatório' : null,
-        'cep': formValues['cep']?.isEmpty ?? true ? 'Campo obrigatório' : null,
-        'n': formValues['n']?.isEmpty ?? true ? 'Campo obrigatório' : null,
-      });
+      
+      validateField('nome', formValues['nome'] ?? '');
+      validateField('cpf', formValues['cpf'] ?? '');
+      validateField('email', formValues['email'] ?? '');
+      validateField('endereco', formValues['endereco'] ?? '');
+      validateField('bairro', formValues['bairro'] ?? '');
+      validateField('cep', formValues['cep'] ?? '');
+      validateField('n', formValues['n'] ?? '');
+      validateField('logadouro', formValues['logadouro'] ?? '');
+      validateField('contato', formValues['contato'] ?? '');
+      validateField('numero', formValues['numero'] ?? '');
+      
+   
     
   }
 

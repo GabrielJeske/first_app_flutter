@@ -64,11 +64,33 @@ mixin _$FormStore on _FormStoreBase, Store {
   }
 
   @override
+  void resetForm() {
+    final _$actionInfo = _$_FormStoreBaseActionController.startAction(
+        name: '_FormStoreBase.resetForm');
+    try {
+      return super.resetForm();
+    } finally {
+      _$_FormStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void validateField(String chave, String value) {
     final _$actionInfo = _$_FormStoreBaseActionController.startAction(
         name: '_FormStoreBase.validateField');
     try {
       return super.validateField(chave, value);
+    } finally {
+      _$_FormStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void validateAllFields() {
+    final _$actionInfo = _$_FormStoreBaseActionController.startAction(
+        name: '_FormStoreBase.validateAllFields');
+    try {
+      return super.validateAllFields();
     } finally {
       _$_FormStoreBaseActionController.endAction(_$actionInfo);
     }
