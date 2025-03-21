@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:first_project/core/views/myaapbar.dart';
 import 'package:first_project/core/views/mydrawer.dart';
 import 'package:first_project/stores/form_store.dart';
@@ -21,14 +21,12 @@ class _ClientesState extends State<Clientes> {
   final Map<String, TextEditingController> controllers = {};
 
   final List<String> campos = [
-    'nome', 'cpf', 'email', 'endereco', 'bairro', 'cep', 'n', 'contato' 'numero'
+    'nome', 'cpf', 'email', 'endereco', 'bairro', 'cep', 'n', 'contato', 'numero', 'contribuinte', 'ie'
   ];
 
   @override
   void initState() {
     super.initState();
-
-    // Inicializando controladores para cada campo
     for (var campo in campos) {
       controllers[campo] = TextEditingController();
 
@@ -40,7 +38,6 @@ class _ClientesState extends State<Clientes> {
 
   @override
   void dispose() {
-    // Liberar memória dos controladores
     for (var controller in controllers.values) {
       controller.dispose();
     }
@@ -49,13 +46,14 @@ class _ClientesState extends State<Clientes> {
 
   void resetForm() {
     formStore.resetForm();
-    
-    // Resetar os controladores para limpar os campos sem recriá-los
     for (var campo in controllers.keys) {
       controllers[campo]!.text = '';
     }
   }
 
+  var maskCpf = MaskTextInputFormatter(mask: '###.###.###-##', filter: { "#": RegExp(r'[0-9]') });
+  var maskCep = MaskTextInputFormatter(mask: '#####-###', filter: { "#": RegExp(r'[0-9]') });
+  var maskNumero = MaskTextInputFormatter(mask: '(##) #####-####', filter: { "#": RegExp(r'[0-9]') });
 
   @override
   Widget build(BuildContext context) {
@@ -93,12 +91,12 @@ class _ClientesState extends State<Clientes> {
                     child: Observer(builder: (_) => 
                       TextFormField(
                         controller: controllers['cpf'],
+                        inputFormatters: [maskCpf],
                         keyboardType: TextInputType.numberWithOptions(),                      
                         decoration: InputDecoration(
                           errorText: formStore.formErrors['cpf'],
                           border: OutlineInputBorder(), 
-                          labelText: 'CPF'
-                          
+                          labelText: 'CPF'                          
                         ),
                         //onChanged: (value) => formStore.setField('cpf', value)
                       ),
@@ -131,6 +129,51 @@ class _ClientesState extends State<Clientes> {
                     )
                   )
                 ],
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Flexible(
+                    child: Observer(builder: (_) =>
+                      DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          labelText: 'Contribuinte', 
+                          border: OutlineInputBorder(),
+                          errorText: formStore.formErrors['contribuinte'],
+                        ),
+                        value: formStore.formValues['Contribuinte'] == '' ?  null: formStore.formValues['Contribuinte'],
+                        items: ['Contribuinte', 'Não Contribuinte', 'Isento'].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          if (newValue != null){
+                            formStore.setField('contribuinte', newValue ?? '');
+                          }                   
+                        },
+                      )
+                    )
+                  ),
+                SizedBox(width: 10),
+                SizedBox(
+                    width: 150,
+                    child: Observer(builder: (_) =>
+                      TextFormField(
+                        controller: controllers['ie'],
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(), 
+                            labelText: 'IE', 
+                            errorText: formStore.formErrors['ie']
+                        ),
+                        //onChanged: (value) => formStore.setField('n', value),
+                      ),
+                    )
+                  )  
+                  
+                ]            
               ),
               SizedBox(height: 10),
               Row(
@@ -188,6 +231,7 @@ class _ClientesState extends State<Clientes> {
                     child: Observer(builder: (_) =>
                       TextFormField(
                         controller: controllers['cep'],
+                        inputFormatters: [maskCep],
                         keyboardType: TextInputType.numberWithOptions(),
                         decoration: InputDecoration(
                             border: OutlineInputBorder(), 
@@ -242,6 +286,7 @@ class _ClientesState extends State<Clientes> {
                     child: Observer(builder: (_) =>
                       TextFormField(
                         controller: controllers['numero'],
+                        inputFormatters: [maskNumero],
                         keyboardType: TextInputType.numberWithOptions(),
                         //inputFormatters: [
                           //MaskTextInputFormatter(

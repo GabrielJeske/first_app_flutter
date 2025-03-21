@@ -89,9 +89,8 @@ abstract class _FormStoreBase with Store{
       validateField('logadouro', formValues['logadouro'] ?? '');
       validateField('contato', formValues['contato'] ?? '');
       validateField('numero', formValues['numero'] ?? '');
-      
-   
-    
+      validateField('contribuinte', formValues['contribuinte'] ?? '');
+      validateField('ie', formValues['ie'] ?? '');    
   }
 
 
