@@ -8,6 +8,9 @@ class FormStore =_FormStoreBase with _$FormStore;
 abstract class _FormStoreBase with Store{
 
    @observable
+   String tipo = 'pj';
+     
+   @observable
    ObservableMap<String, String> formValues = ObservableMap.of({});
 
    @observable
@@ -16,6 +19,11 @@ abstract class _FormStoreBase with Store{
 
    @computed
    bool get isFormValid => formErrors.values.every((error) => error == null);
+
+   @action
+   void setTipo(String tipo){
+    tipo = tipo;
+   }
 
    @action
    void setField(String chave, String value){
@@ -55,6 +63,8 @@ abstract class _FormStoreBase with Store{
          formErrors[chave] = _validateEmail(value);
       }else if (chave == 'cpf'){
          formErrors[chave] = _validateCpf(value);
+      }else if (chave == 'cnpj'){
+        formErrors[chave] = _validateCnpj(value);    
       }else{
          formErrors[chave] = value.isEmpty ? 'Campo obrigatório' : null;
       }
@@ -75,13 +85,33 @@ abstract class _FormStoreBase with Store{
       return null;
    }   
 
+   String? _validateCnpj(String cpf) {
+      final RegExp cpfRegex = RegExp(r'^\d{2}\.?\d{3}\.?\d{3}/?\d{4}-?\d{2}$');
+      if (cpf.isEmpty) return 'CNPJ é obrigatório';
+      if (!cpfRegex.hasMatch(cpf)) return 'CNPJ inválido';  
+      return null;
+   }   
+
    @action
   void validateAllFields() {
     
+      if (tipo == 'ps'){
+        validateField('nome', formValues['nome'] ?? '');
+        validateField('cpf', formValues['cpf'] ?? '');
+        validateAll();
+      }else {
+        validateField('razaosocial', formValues['razaosocial'] ?? '');
+        validateField('cnpj', formValues['cnpj'] ?? '');
+        validateField('fantasia', formValues['fantasia'] ?? '');
+        validateAll();
+      }
       
-      validateField('nome', formValues['nome'] ?? '');
-      validateField('cpf', formValues['cpf'] ?? '');
-      validateField('email', formValues['email'] ?? '');
+        
+  }
+
+  @action
+  void validateAll(){
+    validateField('email', formValues['email'] ?? '');
       validateField('endereco', formValues['endereco'] ?? '');
       validateField('bairro', formValues['bairro'] ?? '');
       validateField('cep', formValues['cep'] ?? '');
@@ -90,7 +120,7 @@ abstract class _FormStoreBase with Store{
       validateField('contato', formValues['contato'] ?? '');
       validateField('numero', formValues['numero'] ?? '');
       validateField('contribuinte', formValues['contribuinte'] ?? '');
-      validateField('ie', formValues['ie'] ?? '');    
+      validateField('ie', formValues['ie'] ?? '');  
   }
 
 
