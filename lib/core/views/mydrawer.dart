@@ -39,20 +39,20 @@ class CustomDrawer extends StatelessWidget {
                     ),
                   ],
                 ),
-                ExpansionTile(title: Text('Produtos'),
+                ExpansionTile(title: Text('Pedidos'),
                 leading: Icon(Icons.shopping_bag_outlined),
                   children: [
                     ListTile(
                       leading: Icon(Icons.add) ,
-                      title: Text('Cadastro'),  
+                      title: Text('Inclusão'),  
                     ),
                     ListTile(
                       leading: Icon(Icons.search),
-                      title: Text('Consulta'),  
+                      title: Text('Pendentes'),  
                     ),
                     ListTile(
                       leading: Icon(Icons.remove_circle_outline_rounded),
-                      title: Text('Exclusao'),  
+                      title: Text('Liberados'),  
                     ),
                   ],
                 ),

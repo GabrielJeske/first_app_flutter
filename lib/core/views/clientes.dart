@@ -58,7 +58,7 @@ class _ClientesState extends State<Clientes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Clientes'),
+      //appBar: CustomAppBar(title: 'Clientes'),
       drawer: CustomDrawer(),
       body: Container(
         padding: EdgeInsets.all(10),

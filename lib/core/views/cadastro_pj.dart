@@ -56,11 +56,12 @@ class _CadastroPJState extends State<CadastroPJ> {
   var maskCnpj = MaskTextInputFormatter(mask: '##.###.###/####-##', filter: { "#": RegExp(r'[0-9]') });
   var maskCep = MaskTextInputFormatter(mask: '#####-###', filter: { "#": RegExp(r'[0-9]') });
   var maskNumero = MaskTextInputFormatter(mask: '(##) #####-####', filter: { "#": RegExp(r'[0-9]') });
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Clientes'),
+     // appBar: CustomAppBar(title: 'Clientes'),
       drawer: CustomDrawer(),
       body: Container(
         padding: EdgeInsets.all(10),
@@ -106,8 +107,7 @@ class _CadastroPJState extends State<CadastroPJ> {
               SizedBox(height: 10),
               Row(
                 children: [
-                  SizedBox(
-                    width: 500,
+                  Flexible(
                     child: Observer(builder: (_) => 
                       TextFormField(
                         controller: controllers['cnpj'],
