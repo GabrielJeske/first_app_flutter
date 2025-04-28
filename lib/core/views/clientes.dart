@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:first_project/core/views/myaapbar.dart';
 import 'package:first_project/core/views/mydrawer.dart';
 import 'package:first_project/stores/form_store.dart';
 import 'package:flutter/material.dart';
@@ -325,11 +324,14 @@ class _ClientesState extends State<Clientes> {
                   SizedBox(width: 10),
                   Observer(builder: (_) =>
                     ElevatedButton(
-                       onPressed: () {
+                       onPressed: () async {
                         formStore.validateAllFields();
-                        if (formStore.isFormValid) {
-                          log("salvou");
-                        }
+                       
+                          log('chegou aqui');
+                          formStore.salvaCliente();
+                          log('chegou aqui');
+                          resetForm;
+                        
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(

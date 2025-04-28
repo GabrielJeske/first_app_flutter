@@ -1,4 +1,10 @@
+import 'dart:convert';
+import 'dart:ffi';
+import 'dart:io';
+import 'dart:math';
+
 import 'package:mobx/mobx.dart';
+import 'package:path_provider/path_provider.dart';
 
 part 'form_store.g.dart';
 
@@ -123,7 +129,52 @@ abstract class _FormStoreBase with Store{
       validateField('ie', formValues['ie'] ?? '');  
   }
 
+   Future<File> obtemFileClie() async{
+      final dir = await getApplicationDocumentsDirectory();
+      final path =  dir.path;
+      final f = File('$path/clientes.json');
+      bool fExiste = await f.exists();
+      if (fExiste){
+         return f;
+      }else {
+         final mClientes = <String, String>{};
+         final jClientes = jsonEncode(mClientes);
+         await f.writeAsString(jClientes);
+         return f;
+      }
+  }
 
-  
+   Future<int> obtemId() async{
+      final json = await obtemFileClie();
+      final contJson = await json.readAsString();
+      final List<dynamic> listaDeClientes = jsonDecode(contJson);
+      
 
+      if (listaDeClientes.isNotEmpty){
+         final ultimoCliente = listaDeClientes.last as Map<String, String>;
+         int ultimoID = ultimoCliente['id'] as int;
+         ultimoID++;
+         return ultimoID;
+      }else {
+         return 1;
+      }
+   }
+
+   Future<void> salvaCliente() async{
+      String id = await obtemId() as String;
+      final fCliente = await obtemFileClie();
+      String contJson = await fCliente.readAsString();
+      List<dynamic> clientes = jsonDecode(contJson); 
+      if (formValues.isNotEmpty){
+         final cliente = <String, String>{};
+            formValues.forEach((key, value) {
+            cliente[key] = value;
+         });
+         cliente[id]=id;
+         clientes.add(cliente);
+         print('$clientes');
+      }else {
+         print('Valores vazios');
+      }
+   }
 }
